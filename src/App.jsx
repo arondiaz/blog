@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "contentful";
 
-function App() {
-  const [count, setCount] = useState(0)
+const client = createClient({
+  space: import.meta.env.VITE_SPACE_ID,
+  environment: "master",
+  accessToken: import.meta.env.VITE_ACCESS_TOKEN,
+});
+
+export const App = () => {
+//   const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getAll = async () => {
+      try {
+        await client.getContentType("blog").then((entries) => {
+          console.log(entries);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAll();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 gap-6 px-4 pt-8">
+      {" "}
+      <section className="p-4 border rounded ">
+        <h3>Sobre mí</h3>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          Hey! <strong> Soy Arón </strong>
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+        <p>
+          Desarrollador React y Java, entre otras tecnologías. Lorem ipsum dolor
+          sit, amet consectetur adipisicing elit. Adipisci accusantium sapiente
+          alias. Nihil, ex velit beatae facere corrupti fugiat ipsa. In quis eos
+          voluptatum blanditiis! Obcaecati aliquid quasi consectetur
+          reprehenderit.
+        </p>
+        <div className="flex gap-4">
+          {/* <Linkedin /> */}
+          {/* <Github /> */}
+        </div>
+      </section>
+      <section className="p-4 border rounded row-span-2">
+        <h3>últimos posts</h3>
+      </section>
+      <section className="p-4 border rounded">
+        {" "}
+        <h3>proyectos</h3>
+      </section>
+    </div>
+  );
+};
